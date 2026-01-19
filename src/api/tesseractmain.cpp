@@ -546,6 +546,20 @@ static void PreloadRenderers(
       }
     }
 
+    api->GetBoolVariable("tessedit_create_md", &b);
+    if (b) {
+      auto* renderer =
+        new tesseract::TessMarkdownRenderer(outputbase);
+      if (renderer->happy()) {
+        renderers->push_back(renderer);
+      } else {
+        delete renderer;
+        tprintf("Error, could not create Markdown output file: %s\n",
+                strerror(errno));
+        error = true;
+      }
+    }
+
     api->GetBoolVariable("tessedit_create_txt", &b);
     if (b || (!error && renderers->empty())) {
       auto* renderer =

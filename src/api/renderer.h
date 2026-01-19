@@ -161,6 +161,23 @@ class TESS_API TessTextRenderer : public TessResultRenderer {
 };
 
 /**
+ * Renders tesseract output into a Markdown formatted text string
+ */
+class TESS_API TessMarkdownRenderer : public TessResultRenderer {
+ public:
+  explicit TessMarkdownRenderer(const char* outputbase);
+
+ protected:
+  bool BeginDocumentHandler() override;
+  bool AddImageHandler(TessBaseAPI* api) override;
+  bool EndDocumentHandler() override;
+
+ private:
+  // Helper function to format text with markdown conventions
+  std::string FormatTextAsMarkdown(const std::string& text);
+};
+
+/**
  * Renders tesseract output into an hocr text string
  */
 class TESS_API TessHOcrRenderer : public TessResultRenderer {
